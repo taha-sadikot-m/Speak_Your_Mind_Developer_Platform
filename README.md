@@ -23,7 +23,11 @@ Copy `.env.example` to `.env.local` and set:
 VITE_API_URL=http://127.0.0.1:8000
 ```
 
-## Local Development
+## Development: Local Setup
+
+### Prerequisites
+- Node.js 18+
+- Backend running locally: `http://127.0.0.1:8000`
 
 ### 1. Install dependencies
 ```bash
@@ -37,9 +41,9 @@ npm run dev
 
 The app will be available at `http://localhost:5174`.
 
-### 3. Backend URL
-By default, the app expects the backend at `http://127.0.0.1:8000`.
-To use a different backend URL, set `VITE_API_URL` in `.env.local`.
+### 3. Environment Variable
+- `.env.local` already defaults to `http://127.0.0.1:8000`
+- No setup needed for local dev
 
 ## Build
 
@@ -49,83 +53,70 @@ npm run build
 
 Output will be in the `dist/` folder.
 
-## Deployment: Vercel
+## Deployment: Vercel + Render Backend
 
-### Step 1: Create GitHub Repository
-Push this folder to a new GitHub repository:
-```bash
-git init
-git add .
-git commit -m "Initial developer portal"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/your-repo.git
-git push -u origin main
-```
+This frontend is designed to work with your **Render backend** (like your main frontend).
 
-### Step 2: Import on Vercel
-1. Go to [vercel.com](https://vercel.com)
-2. Click "Add New..." → "Project"
-3. Import your GitHub repository
+### Prerequisites
+- Backend running on Render: `https://sym-ecosystem-backend.onrender.com`
+- GitHub repository created from this folder
+- Vercel account (free tier is fine)
+
+### Step 1: Deploy to Vercel
+
+1. **Go to [vercel.com](https://vercel.com)**
+2. **Click "Add New..." → "Project"**
+3. **Import your GitHub repository**
 4. **Framework**: Vite (auto-detected)
 5. **Build Command**: `npm run build`
 6. **Output Directory**: `dist`
-7. Click "Deploy"
-
-### Step 3: Add Environment Variable
-1. In Vercel project, go to Settings → Environment Variables
-2. Add new variable:
+7. **Environment Variables**: Add this variable:
    - **Name**: `VITE_API_URL`
-   - **Value**: `https://your-backend-url.com` (or your production backend domain)
-3. Redeploy: Click "Redeploy" or push a new commit
+   - **Value**: `https://sym-ecosystem-backend.onrender.com`
+8. **Click "Deploy"** → Wait for build to complete
 
-### Step 4: Backend CORS Configuration
-Update your backend to allow requests from your Vercel URL:
-```
-CORS_ALLOWED_ORIGINS=https://your-app.vercel.app,http://127.0.0.1:5174
-```
+### Step 2: Get Your Vercel URL
 
-**See [BACKEND_SETUP.md](./BACKEND_SETUP.md) for complete backend configuration.**
+After deployment completes:
+- Vercel will show: `https://your-dev-portal.vercel.app` (or similar)
+- **Copy this URL**
 
-## Backend Configuration Checklist
+### Step 3: Update Render Backend CORS
 
-- [ ] Backend API is running and accessible
-- [ ] Backend has `/api/v1/dev-portal/*` endpoints for portal features
-- [ ] Backend has `/api/v1/developer/*` endpoints for public API
-- [ ] CORS includes your Vercel URL in `CORS_ALLOWED_ORIGINS`
-- [ ] `FRONTEND_URL` set on backend (for redirects/emails)
-- [ ] Gemini API key configured on backend for AI analysis
-- [ ] Database tables created on backend
+1. **Go to Render Dashboard**
+2. **Click on your backend service** (`sym-ecosystem-backend` or similar)
+3. **Go to "Environment" tab**
+4. **Find `CORS_ALLOWED_ORIGINS` variable**
+5. **Add your Vercel URL**:
+   ```
+   https://your-dev-portal.vercel.app,http://127.0.0.1:5174
+   ```
+6. **Click "Save"**
+7. **Go to "Deploys" tab**
+8. **Click "Manual Deploy"** to restart the backend
 
-## Troubleshooting
+### Step 4: Test Connection
 
-### CORS Error During Deployment
-**Error**: `Access to XMLHttpRequest has been blocked by CORS policy`
-**Solution**: Add your Vercel URL to backend `CORS_ALLOWED_ORIGINS` and redeploy backend.
+1. **Visit your Vercel frontend URL**
+2. **Try to log in**
+3. **Check DevTools Network tab** (F12 → Network)
+4. **Look for POST to `/api/v1/dev-portal/auth/login/`**
+   - ✅ Status 200/401 = Connected ✓
+   - ❌ CORS error = Update Render CORS (Step 3)
+   - ❌ Network error = Render backend not running
 
-### 401 Unauthorized / Cannot Log In
-**Error**: `POST /api/v1/dev-portal/auth/login/ 401`
-**Solution**: Verify backend is running and CORS is configured. Check Network tab in DevTools.
+### Troubleshooting
 
-### API 404 Not Found
-**Error**: `GET /api/v1/dev-portal/dashboard/ 404`
-**Solution**: Verify `VITE_API_URL` is set correctly and backend has all required endpoints.
+| Problem | Solution |
+|---------|----------|
+| CORS blocked error | Add Vercel URL to Render `CORS_ALLOWED_ORIGINS` and redeploy |
+| Cannot log in (401) | Check backend CORS first, then verify credentials |
+| Cannot reach API (network error) | Verify `https://sym-ecosystem-backend.onrender.com` is accessible |
+| 404 on login endpoint | Backend might not have dev-portal endpoints |
 
-### Large Bundle Warning
-You may see a warning about the JS bundle being >500 KB. This is non-blocking and can be optimized later with code splitting.
+---
 
-## API Integration
-
-The frontend communicates with two API groups:
-
-1. **Portal API** (JWT authenticated)
-   - Admin/portal-only features (user profile, API key management, etc.)
-   - Requires dev_access_token from login
-
-2. **Public API** (X-API-Key authenticated)
-   - Public interview creation, status polling
-   - Rate-limited per API key
-
-See [BACKEND_SETUP.md](./BACKEND_SETUP.md) for endpoint details.
+## Development: Local Setup
 
 ## Project Structure
 

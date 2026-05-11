@@ -1,11 +1,22 @@
 # Developer Portal – Backend & Environment Setup
 
+## 🚀 Quick Start for Vercel + Render
+
+### Add to Vercel Project Settings → Environment Variables
+```
+VITE_API_URL=https://sym-ecosystem-backend.onrender.com
+```
+
+That's it! Your frontend will connect to your Render backend.
+
+---
+
 ## Frontend Environment Variables
 
 ### Required
 - `VITE_API_URL` - Backend API base URL
-  - Local: `http://127.0.0.1:8000`
-  - Production: `https://api.speakyourmind.app` (or your backend URL)
+  - **Production (Render)**: `https://sym-ecosystem-backend.onrender.com`
+  - Local dev: `http://127.0.0.1:8000`
 
 ### What happens if not set
 - Falls back to `https://api.speakyourmind.app` if deployed (PROD)
@@ -13,23 +24,30 @@
 
 ## Backend Requirements
 
-### 1. CORS Configuration
+### 1. CORS Configuration (CRITICAL ⚠️)
 
-The backend **must** allow requests from your deployed frontend URL.
+Your **Render backend** MUST allow requests from your **Vercel frontend URL**.
 
-In `backend/main/settings.py`, add:
-```python
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5174',  # Local dev
-    'http://127.0.0.1:5174',
-    'https://your-frontend.vercel.app',  # Your deployed frontend
-]
+**In Render Backend Settings**, add your Vercel URL to `CORS_ALLOWED_ORIGINS`:
+
+```
+CORS_ALLOWED_ORIGINS=https://your-dev-portal.vercel.app,http://127.0.0.1:5174
 ```
 
-Or via environment variable:
-```
-CORS_ALLOWED_ORIGINS=https://your-frontend.vercel.app,http://127.0.0.1:5174
-```
+**Step-by-step:**
+1. Go to Render Dashboard → Your Backend Service
+2. Go to "Environment" tab
+3. Find/Edit `CORS_ALLOWED_ORIGINS` variable
+4. Add: `https://your-dev-portal.vercel.app`
+5. Click "Save"
+6. Go to "Deploys" tab
+7. Click "Manual Deploy" to restart backend
+
+**⚠️ If you get CORS error after Vercel deploys:**
+- Copy your Vercel URL (from Vercel Deployments page)
+- Add it to Render `CORS_ALLOWED_ORIGINS`
+- Redeploy Render backend
+- Refresh your Vercel frontend
 
 ### 2. Required Backend Endpoints
 
