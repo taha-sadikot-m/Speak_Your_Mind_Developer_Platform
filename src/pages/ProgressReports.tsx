@@ -136,10 +136,10 @@ const ProgressReports: React.FC = () => {
   };
 
   const statusStyle = (s: string): React.CSSProperties => {
-    if (s === 'DONE') return { background: 'rgba(34,197,94,0.1)', color: '#4ade80', border: '1px solid rgba(34,197,94,0.22)' };
-    if (s === 'FAILED') return { background: 'rgba(239,68,68,0.1)', color: '#f87171', border: '1px solid rgba(239,68,68,0.22)' };
-    if (s === 'PROCESSING') return { background: 'rgba(59,130,246,0.1)', color: '#60a5fa', border: '1px solid rgba(59,130,246,0.22)' };
-    return { background: 'rgba(245,158,11,0.1)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.22)' };
+    if (s === 'DONE') return { background: 'rgba(34,197,94,0.1)', color: '#047857', border: '1px solid rgba(34,197,94,0.22)' };
+    if (s === 'FAILED') return { background: 'rgba(239,68,68,0.1)', color: '#b91c1c', border: '1px solid rgba(239,68,68,0.22)' };
+    if (s === 'PROCESSING') return { background: 'rgba(59,130,246,0.1)', color: '#012a6c', border: '1px solid rgba(59,130,246,0.22)' };
+    return { background: 'rgba(245,158,11,0.1)', color: '#92400e', border: '1px solid rgba(245,158,11,0.22)' };
   };
 
   return (
@@ -150,24 +150,24 @@ const ProgressReports: React.FC = () => {
 
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="page-header mb-6">
         <div className="flex items-start gap-3 flex-wrap">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-brand-500/10 border border-brand-500/20 flex-shrink-0">
-            <TrendingUp size={18} className="text-brand-400" />
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-sym-navy/10 border border-sym-navy/15 flex-shrink-0">
+            <TrendingUp size={18} className="text-sym-navy" />
           </div>
           <div className="min-w-0">
             <h1 className="page-title">Progress reports</h1>
             <p className="page-desc max-w-2xl">
-              Generate timing- and trajectory-focused narratives for up to five <strong className="text-slate-300">COMPLETED</strong>{' '}
+              Generate timing- and trajectory-focused narratives for up to five <strong className="text-gray-600">COMPLETED</strong>{' '}
               interviews at once. SYM orders sessions by completion time for longitudinal context. Each session stores its own report;
-              poll by <code className="text-[11px] font-mono text-brand-400">batch_id</code> or fetch later by <code className="text-[11px] font-mono text-brand-400">report_id</code>.
+              poll by <code className="text-[11px] font-mono text-sym-navy">batch_id</code> or fetch later by <code className="text-[11px] font-mono text-sym-navy">report_id</code>.
             </p>
           </div>
         </div>
       </motion.div>
 
-      <div className="glass-card rounded-2xl p-6 mb-6">
+      <div className="glass-card rounded-xl p-6 mb-6">
         <form onSubmit={onSubmit} className="space-y-4">
           <label className="block">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2 block">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-sym-muted mb-2 block">
               Session room IDs (1–5 UUIDs)
             </span>
             <textarea
@@ -175,26 +175,26 @@ const ProgressReports: React.FC = () => {
               onChange={(e) => setInput(e.target.value)}
               placeholder="e.g. paste up to five room UUIDs, comma or newline separated"
               rows={3}
-              className="w-full rounded-xl bg-slate-900/80 border border-white/10 px-4 py-3 text-sm text-slate-200 placeholder:text-slate-600 font-mono focus:outline-none focus:ring-1 focus:ring-brand-500/40"
+              className="field w-full font-mono resize-none"
             />
           </label>
-          {err && <p className="text-sm text-red-400">{err}</p>}
+          {err && <p className="text-sm text-red-700">{err}</p>}
           <div className="flex flex-wrap items-center gap-3">
             <button type="submit" disabled={submitting} className="btn-primary px-5 py-2.5 text-sm inline-flex items-center gap-2">
               {submitting ? <Loader2 size={15} className="animate-spin" /> : null}
               {submitting ? 'Starting…' : 'Generate batch'}
             </button>
-            <span className="text-xs text-slate-500">{parseIds().length} / 5 ids parsed</span>
+            <span className="text-xs text-sym-muted">{parseIds().length} / 5 ids parsed</span>
           </div>
         </form>
       </div>
 
       {/* Browse / manage existing reports */}
-      <div className="glass-card rounded-2xl p-6 mb-6">
+      <div className="glass-card rounded-xl p-6 mb-6">
         <div className="flex items-start justify-between gap-4 flex-wrap mb-4">
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-white">Browse & manage</p>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-sm font-semibold text-sym-navy">Browse & manage</p>
+            <p className="text-xs text-sym-muted mt-1">
               Filter stored reports by room, batch, or status. You can delete any report row (history-safe).
             </p>
           </div>
@@ -228,24 +228,24 @@ const ProgressReports: React.FC = () => {
             className="field font-mono text-xs"
           />
         </div>
-        {browseErr && <p className="text-xs text-red-400 mt-3">{browseErr}</p>}
+        {browseErr && <p className="text-xs text-red-700 mt-3">{browseErr}</p>}
 
         <div className="mt-4 space-y-2">
           {browseLoading ? (
             <div className="skeleton h-20 rounded-xl" />
           ) : browseRows.length === 0 ? (
-            <p className="text-xs text-slate-600">No reports match these filters yet.</p>
+            <p className="text-xs text-sym-muted">No reports match these filters yet.</p>
           ) : (
-            <div className="rounded-xl border border-white/[0.06] overflow-hidden">
+            <div className="rounded-xl border border-gray-200 overflow-hidden">
               {browseRows.slice(0, 50).map((r) => (
-                <div key={r.id} className="px-4 py-3 border-b border-white/[0.06] last:border-0 flex items-center justify-between gap-3">
+                <div key={r.id} className="px-4 py-3 border-b border-gray-200 last:border-0 flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-[11px] font-mono text-slate-400 truncate">{r.room_id}</p>
+                    <p className="text-[11px] font-mono text-sym-muted truncate">{r.room_id}</p>
                     <div className="flex flex-wrap items-center gap-2 mt-1">
                       <span className="text-[10px] px-2 py-0.5 rounded font-semibold uppercase" style={statusStyle(r.status)}>
                         {r.status}
                       </span>
-                      <span className="text-[11px] text-slate-600 font-mono truncate">
+                      <span className="text-[11px] text-sym-muted font-mono truncate">
                         {r.id}
                       </span>
                     </div>
@@ -253,7 +253,7 @@ const ProgressReports: React.FC = () => {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <button
                       type="button"
-                      className="btn-ghost text-xs py-2 px-3 inline-flex items-center gap-2 border border-white/10 rounded-xl"
+                      className="btn-ghost text-xs py-2 px-3 inline-flex items-center gap-2 border border-gray-200 rounded-xl"
                       onClick={() => {
                         setBatchId(r.batch_id);
                         setRows([]); // will be filled by poll
@@ -283,14 +283,14 @@ const ProgressReports: React.FC = () => {
       </div>
 
       {batchId && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card rounded-2xl overflow-hidden mb-6">
-          <div className="px-5 py-3 border-b border-white/[0.06] flex flex-wrap items-center justify-between gap-2">
-            <p className="text-sm font-medium text-white">
-              Batch <code className="text-xs font-mono text-brand-400">{batchId}</code>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card rounded-xl overflow-hidden mb-6">
+          <div className="px-5 py-3 border-b border-gray-200 flex flex-wrap items-center justify-between gap-2">
+            <p className="text-sm font-medium text-sym-navy">
+              Batch <code className="text-xs font-mono text-sym-navy">{batchId}</code>
             </p>
             {rows.length > 0 && !rows.every((r) => terminal(r.status)) && (
-              <span className="text-xs text-slate-500 inline-flex items-center gap-1.5">
-                <Loader2 size={12} className="animate-spin text-blue-400" /> Polling every 4s…
+              <span className="text-xs text-sym-muted inline-flex items-center gap-1.5">
+                <Loader2 size={12} className="animate-spin text-sym-navy" /> Polling every 4s…
               </span>
             )}
           </div>
@@ -299,18 +299,18 @@ const ProgressReports: React.FC = () => {
               <div key={r.id} className="px-5 py-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-xs font-mono text-slate-400 truncate mb-1">{r.room_id}</p>
+                    <p className="text-xs font-mono text-sym-muted truncate mb-1">{r.room_id}</p>
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-[10px] px-2 py-0.5 rounded font-semibold uppercase" style={statusStyle(r.status)}>
                         {r.status}
                       </span>
                       {r.interview_duration_seconds != null && (
-                        <span className="text-[11px] text-slate-500">
+                        <span className="text-[11px] text-sym-muted">
                           Wall time: {r.interview_duration_seconds}s
                         </span>
                       )}
                       {r.error_message ? (
-                        <span className="text-[11px] text-red-400 truncate max-w-md">{r.error_message}</span>
+                        <span className="text-[11px] text-red-700 truncate max-w-md">{r.error_message}</span>
                       ) : null}
                     </div>
                   </div>
@@ -342,11 +342,11 @@ const ProgressReports: React.FC = () => {
                   </button>
                 </div>
                 {expanded[r.id] && r.status === 'DONE' && (
-                  <div className="mt-4 rounded-xl bg-white/[0.02] border border-white/[0.06] p-4 text-sm text-slate-300 leading-relaxed space-y-3">
+                  <div className="mt-4 rounded-xl bg-[#F9FAFB] border border-gray-200 p-4 text-sm text-gray-600 leading-relaxed space-y-3">
                     {detailCache[r.id] && !(detailCache[r.id] as { _error?: boolean })._error ? (
                       <>
                         {((detailCache[r.id] as any).headline || (detailCache[r.id] as any).title) && (
-                          <p className="font-semibold text-white">
+                          <p className="font-semibold text-sym-navy">
                             {String((detailCache[r.id] as any).headline ?? (detailCache[r.id] as any).title)}
                           </p>
                         )}
@@ -360,19 +360,19 @@ const ProgressReports: React.FC = () => {
                           </p>
                         )}
                         {((detailCache[r.id] as any).coachPlan || (detailCache[r.id] as any).recommended_practice) && (
-                          <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
-                            <p className="text-[11px] uppercase tracking-wider text-slate-500 font-bold mb-2">
+                          <div className="rounded-lg border border-gray-200 bg-[#F9FAFB] p-3">
+                            <p className="text-[11px] uppercase tracking-wider text-sym-muted font-bold mb-2">
                               Coach plan (highlights)
                             </p>
                             {Array.isArray((detailCache[r.id] as any).coachPlan?.priorityFocusForNext7Days) && (
-                              <ul className="text-sm text-slate-300 space-y-1">
+                              <ul className="text-sm text-gray-600 space-y-1">
                                 {(detailCache[r.id] as any).coachPlan.priorityFocusForNext7Days.slice(0, 5).map((x: any, i: number) => (
                                   <li key={i}>- {String(x)}</li>
                                 ))}
                               </ul>
                             )}
                             {Array.isArray((detailCache[r.id] as any).recommended_practice) && (
-                              <ul className="text-sm text-slate-300 space-y-1">
+                              <ul className="text-sm text-gray-600 space-y-1">
                                 {(detailCache[r.id] as any).recommended_practice.slice(0, 5).map((x: any, i: number) => (
                                   <li key={i}>- {String(x)}</li>
                                 ))}
@@ -381,17 +381,17 @@ const ProgressReports: React.FC = () => {
                           </div>
                         )}
                         {((detailCache[r.id] as any).detailed_narrative as string) && (
-                          <p className="whitespace-pre-wrap text-slate-400">{String((detailCache[r.id] as any).detailed_narrative)}</p>
+                          <p className="whitespace-pre-wrap text-sym-muted">{String((detailCache[r.id] as any).detailed_narrative)}</p>
                         )}
                         {((detailCache[r.id] as any).encouragementNote as string) && (
-                          <p className="whitespace-pre-wrap text-slate-400">{String((detailCache[r.id] as any).encouragementNote)}</p>
+                          <p className="whitespace-pre-wrap text-sym-muted">{String((detailCache[r.id] as any).encouragementNote)}</p>
                         )}
                       </>
                     ) : (
-                      <p className="text-slate-500 text-xs">Loading or unavailable…</p>
+                      <p className="text-sym-muted text-xs">Loading or unavailable…</p>
                     )}
-                    <p className="text-[11px] text-slate-600 pt-2 border-t border-white/[0.06]">
-                      Full JSON: GET <code className="text-brand-400">/api/v1/dev-portal/progress-reports/{'{id}'}/</code>
+                    <p className="text-[11px] text-sym-muted pt-2 border-t border-gray-200">
+                      Full JSON: GET <code className="text-sym-navy">/api/v1/dev-portal/progress-reports/{'{id}'}/</code>
                     </p>
                   </div>
                 )}
@@ -401,14 +401,14 @@ const ProgressReports: React.FC = () => {
         </motion.div>
       )}
 
-      <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4 text-xs text-slate-500 leading-relaxed">
-        <p className="font-semibold text-slate-400 mb-2 text-[11px] uppercase tracking-wider">Developer API (X-API-Key)</p>
+      <div className="rounded-xl border border-gray-200 bg-[#F9FAFB] px-5 py-4 text-xs text-sym-muted leading-relaxed">
+        <p className="font-semibold text-sym-muted mb-2 text-[11px] uppercase tracking-wider">Developer API (X-API-Key)</p>
         <p>
-          <code className="text-brand-400">POST /api/v1/developer/progress-reports/</code> with body{' '}
-          <code className="text-slate-400">{`{"session_room_ids":["uuid",...]}`}</code>. Poll{' '}
-          <code className="text-brand-400">GET …/progress-reports/?batch_id=…</code> or retrieve a stored report by{' '}
-          <code className="text-brand-400">GET …/progress-reports/{'{report_id}'}/</code>. Per-session shortcut:{' '}
-          <code className="text-brand-400">GET …/sessions/{'{room_id}'}/progress-report/</code> (latest).
+          <code className="text-sym-navy">POST /api/v1/developer/progress-reports/</code> with body{' '}
+          <code className="text-sym-muted">{`{"session_room_ids":["uuid",...]}`}</code>. Poll{' '}
+          <code className="text-sym-navy">GET …/progress-reports/?batch_id=…</code> or retrieve a stored report by{' '}
+          <code className="text-sym-navy">GET …/progress-reports/{'{report_id}'}/</code>. Per-session shortcut:{' '}
+          <code className="text-sym-navy">GET …/sessions/{'{room_id}'}/progress-report/</code> (latest).
         </p>
       </div>
     </div>

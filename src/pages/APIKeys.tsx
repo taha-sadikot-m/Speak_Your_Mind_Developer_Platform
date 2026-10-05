@@ -14,8 +14,8 @@ const ModePill: React.FC<{ mode: string }> = ({ mode }) => (
   <span
     className="badge text-[10.5px]"
     style={mode === 'LIVE'
-      ? { background: 'rgba(34,197,94,0.1)', color: '#4ade80', border: '1px solid rgba(34,197,94,0.25)' }
-      : { background: 'rgba(245,158,11,0.1)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.25)' }
+      ? { background: 'rgba(34,197,94,0.1)', color: '#047857', border: '1px solid rgba(34,197,94,0.25)' }
+      : { background: 'rgba(245,158,11,0.1)', color: '#92400e', border: '1px solid rgba(245,158,11,0.25)' }
     }
   >
     {mode}
@@ -29,7 +29,7 @@ const CopyBtn: React.FC<{ text: string }> = ({ text }) => {
       onClick={e => { e.stopPropagation(); navigator.clipboard.writeText(text); setDone(true); setTimeout(() => setDone(false), 2000); }}
       className="btn-ghost py-1 px-2"
     >
-      {done ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
+      {done ? <Check size={12} className="text-emerald-700" /> : <Copy size={12} />}
     </button>
   );
 };
@@ -59,11 +59,11 @@ const CreateForm: React.FC<{
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       onSubmit={submit}
-      className="glass-card rounded-2xl p-6 mb-5"
+      className="glass-card rounded-xl p-6 mb-5"
     >
-      <h3 className="text-sm font-bold text-white font-display mb-5">New API Key</h3>
+      <h3 className="text-sm font-bold text-sym-navy font-display mb-5">New API Key</h3>
       {error && (
-        <div className="mb-4 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-xs text-red-300">
+        <div className="mb-4 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-xs text-red-700">
           {error}
         </div>
       )}
@@ -114,21 +114,21 @@ const RevealedBanner: React.FC<{
   <motion.div
     initial={{ opacity: 0, y: -8 }}
     animate={{ opacity: 1, y: 0 }}
-    className="mb-5 rounded-2xl p-6"
+    className="mb-5 rounded-xl p-6"
     style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.2)' }}
   >
     <div className="flex items-start justify-between mb-3">
-      <p className="text-sm font-bold text-white">"{data.label}" created — save these values now</p>
-      <button onClick={onClose} className="text-xs text-slate-500 hover:text-slate-300 transition-colors">Dismiss</button>
+      <p className="text-sm font-bold text-sym-navy">"{data.label}" created — save these values now</p>
+      <button onClick={onClose} className="text-xs text-sym-muted hover:text-gray-600 transition-colors">Dismiss</button>
     </div>
-    <p className="text-xs text-slate-400 mb-5 leading-relaxed">
-      These values are shown <strong className="text-slate-200">only once</strong>. Store them securely before closing this banner.
+    <p className="text-xs text-sym-muted mb-5 leading-relaxed">
+      These values are shown <strong className="text-gray-700">only once</strong>. Store them securely before closing this banner.
     </p>
     {[{ label: 'API Key', value: data.key }, { label: 'Webhook Secret', value: data.webhook_secret }].map(({ label, value }) => (
       <div key={label} className="mb-3">
         <p className="label mb-2">{label}</p>
-        <div className="flex items-center gap-2 rounded-xl px-4 py-3 bg-slate-900/60 border border-white/10">
-          <code className="flex-1 text-xs font-mono text-slate-300 break-all leading-relaxed">{value}</code>
+        <div className="flex items-center gap-2 rounded-lg px-4 py-3 bg-[#F9FAFB] border border-gray-200 border-l-[3px] border-l-sym-gold">
+          <code className="flex-1 text-xs font-mono text-gray-600 break-all leading-relaxed">{value}</code>
           <CopyBtn text={value} />
         </div>
       </div>
@@ -153,23 +153,23 @@ const KeyRow: React.FC<{ apiKey: APIKey; onRefresh: () => void }> = ({ apiKey: k
 
   return (
     <div
-      className="border-b border-white/[0.05] last:border-0"
+      className="border-b border-gray-200 last:border-0"
       style={{ opacity: k.is_active ? 1 : 0.5 }}
     >
       <button
         onClick={() => setExpanded(v => !v)}
-        className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-white/[0.03] transition-colors"
+        className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-gray-50 transition-colors"
       >
-        <Shield size={14} className={k.is_active ? 'text-brand-400' : 'text-slate-600'} />
+        <Shield size={14} className={k.is_active ? 'text-sym-navy' : 'text-sym-muted'} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
-            <span className="text-sm font-semibold text-white">{k.label}</span>
+            <span className="text-sm font-semibold text-sym-navy">{k.label}</span>
             <ModePill mode={k.mode} />
             {!k.is_active && (
-              <span className="badge text-[10px] bg-white/5 text-slate-500 border border-white/10">revoked</span>
+              <span className="badge text-[10px] bg-gray-100 text-sym-muted border border-gray-200">revoked</span>
             )}
           </div>
-          <code className="text-[11px] font-mono text-slate-600 tracking-wider">
+          <code className="text-[11px] font-mono text-sym-muted tracking-wider">
             {k.key_prefix}{'•'.repeat(20)}
           </code>
         </div>
@@ -182,8 +182,8 @@ const KeyRow: React.FC<{ apiKey: APIKey; onRefresh: () => void }> = ({ apiKey: k
           </button>
         </div>
         {expanded
-          ? <ChevronUp size={13} className="text-slate-600 flex-shrink-0" />
-          : <ChevronDown size={13} className="text-slate-600 flex-shrink-0" />
+          ? <ChevronUp size={13} className="text-sym-muted flex-shrink-0" />
+          : <ChevronDown size={13} className="text-sym-muted flex-shrink-0" />
         }
       </button>
 
@@ -195,19 +195,19 @@ const KeyRow: React.FC<{ apiKey: APIKey; onRefresh: () => void }> = ({ apiKey: k
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <div className="grid grid-cols-3 px-5 py-4 bg-white/[0.02] border-t border-white/[0.04]">
+            <div className="grid grid-cols-3 px-5 py-4 bg-[#F9FAFB] border-t border-gray-100">
               {[
                 { label: 'Requests today',    value: k.requests_today },
                 { label: 'This month',        value: k.requests_this_month },
                 { label: 'Rate limit',        value: `${k.requests_per_minute}/min` },
               ].map(({ label, value }, i) => (
-                <div key={label} className={i < 2 ? 'border-r border-white/[0.06] pr-4 mr-4' : ''}>
-                  <p className="text-[10.5px] text-slate-500 uppercase tracking-wider mb-1">{label}</p>
-                  <p className="text-xl font-bold font-display text-white tabular-nums">{value}</p>
+                <div key={label} className={i < 2 ? 'border-r border-gray-200 pr-4 mr-4' : ''}>
+                  <p className="text-[10.5px] text-sym-muted uppercase tracking-wider mb-1">{label}</p>
+                  <p className="text-xl font-bold font-display text-sym-navy tabular-nums">{value}</p>
                 </div>
               ))}
               {k.last_used_at && (
-                <p className="col-span-3 mt-3 pt-3 border-t border-white/[0.04] text-[11px] text-slate-600">
+                <p className="col-span-3 mt-3 pt-3 border-t border-gray-100 text-[11px] text-sym-muted">
                   Last used {new Date(k.last_used_at).toLocaleString()}
                 </p>
               )}
@@ -255,24 +255,24 @@ const APIKeys: React.FC = () => {
 
       {/* Usage snippet */}
       <div className="glass-card rounded-xl px-4 py-3 mb-5">
-        <code className="text-xs font-mono text-slate-400 break-all">
-          <span className="text-slate-200">curl </span>
-          <span className="text-brand-400">-H</span>
+        <code className="text-xs font-mono text-sym-muted break-all">
+          <span className="text-gray-700">curl </span>
+          <span className="text-sym-navy">-H</span>
           {' "X-API-Key: sym_live_…" '}
-          <span className="text-slate-600">https://api.speakyourmind.app/api/v1/developer/sessions/</span>
+          <span className="text-sym-muted">https://api.speakyourmind.app/api/v1/developer/sessions/</span>
         </code>
       </div>
 
       {loading ? (
         <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="skeleton h-16 rounded-xl" />)}</div>
       ) : keys.length === 0 ? (
-        <div className="glass-card rounded-2xl flex flex-col items-center justify-center py-16 px-8 text-center">
-          <Shield size={32} className="text-slate-700 mb-4" />
-          <p className="text-base font-bold text-white mb-2">No API keys yet</p>
-          <p className="text-sm text-slate-500">Create your first key to start building with the SYM API.</p>
+        <div className="glass-card rounded-xl flex flex-col items-center justify-center py-16 px-8 text-center">
+          <Shield size={32} className="text-gray-400 mb-4" />
+          <p className="text-base font-bold text-sym-navy mb-2">No API keys yet</p>
+          <p className="text-sm text-sym-muted">Create your first key to start building with the SYM API.</p>
         </div>
       ) : (
-        <div className="glass-card rounded-2xl overflow-hidden">
+        <div className="glass-card rounded-xl overflow-hidden">
           {keys.map(k => <KeyRow key={k.id} apiKey={k} onRefresh={fetchKeys} />)}
         </div>
       )}

@@ -156,7 +156,7 @@ const EndpointRow: React.FC<{ method: string; path: string; desc: string }> = ({
 /* ── Section ─────────────────────────────────────────── */
 const Section: React.FC<{ id: string; title: string; children: React.ReactNode }> = ({ id, title, children }) => (
   <section id={id} className="mb-12 scroll-mt-4">
-    <h2 className="text-[15px] font-semibold text-white mb-4 pb-3" style={{ borderBottom: '1px solid var(--border)' }}>
+    <h2 className="text-[15px] font-semibold text-sym-navy mb-4 pb-3" style={{ borderBottom: '1px solid var(--border)' }}>
       {title}
     </h2>
     {children}
@@ -241,7 +241,7 @@ const Docs: React.FC = () => {
             <span className="badge text-[10px] font-mono" style={{ background: 'var(--surface-2)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>v1.0</span>
             <span className="text-[12px]" style={{ color: 'var(--text-muted)' }}>REST API</span>
           </div>
-          <h1 className="text-[22px] font-semibold text-white mb-2">SYM Developer API</h1>
+          <h1 className="text-[22px] font-semibold text-sym-navy mb-2">SYM Developer API</h1>
           <p className="text-[13px] leading-relaxed" style={{ color: 'var(--text-muted)' }}>
             Embed AI-powered interviews into your product. Create a session, send the room URL to your candidate, and retrieve structured Gemini analysis — all programmatically.
           </p>
@@ -264,12 +264,12 @@ const Docs: React.FC = () => {
             ].map(({ n, title, desc }) => (
               <div key={n} className="rounded-lg p-4" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
                 <p className="text-[12px] font-mono mb-2" style={{ color: 'var(--text-faint)' }}>{n}</p>
-                <p className="text-[13px] font-semibold text-white mb-1">{title}</p>
+                <p className="text-[13px] font-semibold text-sym-navy mb-1">{title}</p>
                 <p className="text-[12px] leading-relaxed" style={{ color: 'var(--text-muted)' }}>{desc}</p>
               </div>
             ))}
           </div>
-          <div className="rounded-md px-4 py-3 text-[12px]" style={{ background: 'rgba(124,58,237,0.06)', border: '1px solid var(--accent-border)', color: 'var(--text-secondary)' }}>
+          <div className="rounded-md px-4 py-3 text-[12px]" style={{ background: 'rgba(1,42,108,0.06)', border: '1px solid var(--accent-border)', color: 'var(--text-secondary)' }}>
             <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>Sandbox mode: </span>
             Keys created in SANDBOX mode return mock sessions that don't consume quota — ideal for integration testing.
           </div>
@@ -604,7 +604,7 @@ echo $data["room_url"];`,
                       </code>
                     </td>
                     <td className="px-4 py-2.5 w-36">
-                      <span className="text-[12.5px] font-medium text-white">{name}</span>
+                      <span className="text-[12.5px] font-medium text-sym-navy">{name}</span>
                     </td>
                     <td className="px-4 py-2.5">
                       <span className="text-[12px]" style={{ color: 'var(--text-muted)' }}>{desc}</span>

@@ -60,13 +60,13 @@ const SetDetail: React.FC = () => {
 
   if (loading) return (
     <div className="flex items-center justify-center h-72">
-      <Loader2 size={20} className="animate-spin text-brand-400" />
+      <Loader2 size={20} className="animate-spin text-sym-navy" />
     </div>
   );
   if (!set) return (
     <div className="page">
       <button onClick={() => navigate('/sets')} className="btn-ghost mb-4"><ArrowLeft size={13} /> Sets</button>
-      <p className="text-slate-500 text-sm">Question set not found.</p>
+      <p className="text-sym-muted text-sm">Question set not found.</p>
     </div>
   );
 
@@ -77,24 +77,24 @@ const SetDetail: React.FC = () => {
       <button onClick={() => navigate('/sets')} className="btn-ghost mb-5 -ml-1"><ArrowLeft size={13} /> Sets</button>
 
       {/* Set info card */}
-      <div className="glass-card rounded-2xl p-6 mb-5">
+      <div className="glass-card rounded-xl p-6 mb-5">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="min-w-0 flex-1">
-            <h1 className="text-xl font-display font-bold text-white mb-1">{set.name}</h1>
-            {set.description && <p className="text-sm text-slate-400 mb-3">{set.description}</p>}
+            <h1 className="text-xl font-display font-bold text-sym-navy mb-1">{set.name}</h1>
+            {set.description && <p className="text-sm text-sym-muted mb-3">{set.description}</p>}
             <div className="flex items-center gap-2">
-              <span className="text-[11px] text-slate-600">set_id</span>
-              <code className="text-[11px] font-mono text-slate-400">{set.id}</code>
+              <span className="text-[11px] text-sym-muted">set_id</span>
+              <code className="text-[11px] font-mono text-sym-muted">{set.id}</code>
               <button
                 onClick={() => { navigator.clipboard.writeText(set.id); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
                 className="btn-ghost py-0.5 px-1.5"
               >
-                {copied ? <Check size={11} className="text-green-400" /> : <Copy size={11} />}
+                {copied ? <Check size={11} className="text-emerald-700" /> : <Copy size={11} />}
               </button>
             </div>
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
-            <span className="text-xs text-slate-500 tabular-nums">{questions.length} / {set.question_count_limit}</span>
+            <span className="text-xs text-sym-muted tabular-nums">{questions.length} / {set.question_count_limit}</span>
             <button onClick={handleSave} disabled={saving} className="btn-primary py-2.5 px-5 text-sm">
               {saving ? <><Loader2 size={12} className="animate-spin" /> Saving…</>
                : saved ? <><Check size={12} /> Saved</>
@@ -105,14 +105,14 @@ const SetDetail: React.FC = () => {
       </div>
 
       {error && (
-        <div className="mb-4 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-sm text-red-300">{error}</div>
+        <div className="mb-4 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-sm text-red-700">{error}</div>
       )}
 
       {/* Questions */}
       <div className="space-y-3 mb-3">
         {questions.length === 0 && (
-          <div className="glass-card rounded-2xl py-14 text-center">
-            <p className="text-sm text-slate-500">No questions yet. Add your first question below.</p>
+          <div className="glass-card rounded-xl py-14 text-center">
+            <p className="text-sm text-sym-muted">No questions yet. Add your first question below.</p>
           </div>
         )}
         {questions.map((q, i) => (
@@ -123,8 +123,8 @@ const SetDetail: React.FC = () => {
             className="glass-card rounded-xl overflow-hidden"
           >
             {/* Toolbar */}
-            <div className="flex items-center gap-3 px-4 py-2.5 bg-white/[0.03] border-b border-white/[0.05]">
-              <span className="text-[11px] font-mono font-bold text-slate-600 w-5">{String(i + 1).padStart(2, '0')}</span>
+            <div className="flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-200">
+              <span className="text-[11px] font-mono font-bold text-sym-muted w-5">{String(i + 1).padStart(2, '0')}</span>
               <select
                 value={q.question_type}
                 onChange={e => updateQ(i, 'question_type', e.target.value)}
@@ -133,7 +133,7 @@ const SetDetail: React.FC = () => {
               >
                 {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
-              <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="flex items-center gap-1.5 text-xs text-sym-muted">
                 <span>Limit</span>
                 <input
                   type="number" min={10} max={600}
@@ -153,8 +153,8 @@ const SetDetail: React.FC = () => {
               onChange={e => updateQ(i, 'text', e.target.value)}
               placeholder="Enter your interview question…"
               rows={2}
-              className="w-full bg-transparent outline-none px-4 py-3 text-sm text-slate-200 placeholder-slate-600 resize-y font-sans leading-relaxed"
-              style={{ caretColor: '#0ea5e9' }}
+              className="w-full bg-transparent outline-none px-4 py-3 text-sm text-gray-700 placeholder-gray-400 resize-y font-sans leading-relaxed"
+              style={{ caretColor: '#012a6c' }}
             />
           </motion.div>
         ))}
@@ -164,12 +164,12 @@ const SetDetail: React.FC = () => {
       {!atLimit ? (
         <button
           onClick={addQ}
-          className="w-full py-3 rounded-xl text-sm text-slate-500 border border-dashed border-white/10 hover:border-brand-500/40 hover:text-brand-400 hover:bg-brand-500/5 transition-all flex items-center justify-center gap-2"
+          className="w-full py-3 rounded-xl text-sm text-sym-muted border border-dashed border-gray-200 hover:border-sym-navy/30 hover:text-sym-navy hover:bg-sym-navy/5 transition-all flex items-center justify-center gap-2"
         >
           <Plus size={14} /> Add Question
         </button>
       ) : (
-        <p className="text-center text-xs text-slate-600 py-3">
+        <p className="text-center text-xs text-sym-muted py-3">
           Maximum {set.question_count_limit} questions reached for your plan.
         </p>
       )}

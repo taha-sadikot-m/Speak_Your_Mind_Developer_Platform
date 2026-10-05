@@ -336,19 +336,18 @@ const Sandbox: React.FC = () => {
   }[p] ?? p);
 
   return (
-    <div className="flex h-full min-h-0">
+    <div className="flex flex-col lg:flex-row h-full min-h-0">
 
       {/* ── Left: request builder ─────────────────────── */}
       <div
-        className="flex flex-col flex-shrink-0 overflow-hidden"
-        style={{ width: 340, borderRight: '1px solid var(--border)' }}
+        className="flex flex-col w-full lg:w-[340px] lg:flex-shrink-0 overflow-hidden border-b lg:border-b-0 lg:border-r border-gray-200 max-h-[70vh] lg:max-h-none"
       >
         {/* Header */}
         <div
           className="px-5 py-4 flex-shrink-0"
           style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}
         >
-          <h1 className="text-[14px] font-semibold text-white mb-0.5">API Sandbox</h1>
+          <h1 className="text-[14px] font-semibold text-sym-navy mb-0.5">API Sandbox</h1>
           <p className="text-[12px]" style={{ color: 'var(--text-muted)' }}>
             Fire live requests against the SYM API.
           </p>
@@ -563,7 +562,7 @@ const Sandbox: React.FC = () => {
             )
           ) : (
             <div className="flex flex-col items-center justify-center h-48 text-center">
-              <p className="text-[13px] font-medium text-white mb-1">No response yet</p>
+              <p className="text-[13px] font-medium text-sym-navy mb-1">No response yet</p>
               <p className="text-[12px]" style={{ color: 'var(--text-muted)' }}>
                 Select an endpoint and press Send Request.
               </p>

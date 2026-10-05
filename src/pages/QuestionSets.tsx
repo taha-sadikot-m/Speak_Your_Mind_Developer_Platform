@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, Trash2, ChevronRight, FolderOpen } from 'lucide-react';
 import { setApi } from '../services/api';
+import Alert from '../components/Alert';
+import EmptyState from '../components/EmptyState';
+import StatusBadge from '../components/StatusBadge';
+import { DataRow, DataTable } from '../components/DataTable';
 
 interface QuestionSet {
   id: string; name: string; description: string;
@@ -68,15 +72,13 @@ const QuestionSets: React.FC = () => {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           onSubmit={handleCreate}
-          className="glass-card rounded-2xl p-6 mb-5"
+          className="glass-card rounded-xl p-6 mb-5"
         >
-          <h3 className="text-sm font-bold text-white font-display mb-5">New Question Set</h3>
-          {error && (
-            <div className="mb-4 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-xs text-red-300">{error}</div>
-          )}
+          <h3 className="text-sm font-bold text-sym-navy font-display mb-5">New Question Set</h3>
+          {error && <Alert className="mb-4">{error}</Alert>}
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
             <div className="space-y-1.5">
-              <label className="label">Name <span className="text-red-400">*</span></label>
+              <label className="label">Name <span className="text-red-700">*</span></label>
               <input {...f('name')} type="text" placeholder="Frontend Engineer Interview" className="field" />
             </div>
             <div className="space-y-1.5">
@@ -106,63 +108,48 @@ const QuestionSets: React.FC = () => {
       {loading ? (
         <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="skeleton h-16 rounded-xl" />)}</div>
       ) : sets.length === 0 ? (
-        <div className="glass-card rounded-2xl flex flex-col items-center justify-center py-20 text-center">
-          <FolderOpen size={36} className="text-slate-700 mb-4" />
-          <p className="text-base font-bold text-white mb-2">No question sets</p>
-          <p className="text-sm text-slate-500 max-w-xs">Create a set and add interview questions to start creating sessions.</p>
-        </div>
+        <EmptyState
+          icon={FolderOpen}
+          title="No question sets"
+          description="Create a set and add interview questions to start creating sessions."
+        />
       ) : (
-        <div className="glass-card rounded-2xl overflow-hidden">
-          <div className="grid px-5 py-3 bg-white/[0.02] border-b border-white/[0.05]"
-            style={{ gridTemplateColumns: '2fr 140px 80px 56px' }}
-          >
-            {['Name', 'Questions', 'Status', ''].map(h => (
-              <span key={h} className="text-[10.5px] font-bold uppercase tracking-wider text-slate-600">{h}</span>
-            ))}
-          </div>
+        <DataTable columns="2fr 140px 80px 56px" headers={['Name', 'Questions', 'Status', '']} minWidth={560}>
           {sets.map((s, i) => (
-            <motion.div
-              key={s.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: i * 0.04 }}
-              onClick={() => navigate(`/sets/${s.id}`)}
-              className="grid items-center px-5 py-4 cursor-pointer border-b border-white/[0.04] last:border-0 hover:bg-white/[0.03] transition-colors"
-              style={{ gridTemplateColumns: '2fr 140px 80px 56px', opacity: s.is_active ? 1 : 0.5 }}
-            >
-              <div className="min-w-0 pr-3">
-                <p className="text-sm font-semibold text-white truncate">{s.name}</p>
-              </div>
-              <div>
-                <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-sm font-bold text-white tabular-nums">{s.question_count}</span>
-                  <span className="text-xs text-slate-600">/ {s.question_count_limit}</span>
+            <motion.div key={s.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.04 }}>
+              <DataRow
+                columns="2fr 140px 80px 56px"
+                onClick={() => navigate(`/sets/${s.id}`)}
+                style={{ opacity: s.is_active ? 1 : 0.5 }}
+              >
+                <div className="min-w-0 pr-3">
+                  <p className="text-sm font-semibold text-sym-navy truncate">{s.name}</p>
                 </div>
-                <div className="h-1 w-16 rounded-full bg-white/5">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-brand-600 to-accent-600 transition-all"
-                    style={{ width: `${s.question_count_limit > 0 ? (s.question_count / s.question_count_limit) * 100 : 0}%` }}
-                  />
+                <div>
+                  <div className="flex items-baseline gap-1 mb-2">
+                    <span className="text-sm font-bold text-sym-navy tabular-nums">{s.question_count}</span>
+                    <span className="text-xs text-sym-muted">/ {s.question_count_limit}</span>
+                  </div>
+                  <div className="h-1 w-16 rounded-full bg-gray-100">
+                    <div
+                      className="h-full rounded-full bg-sym-navy transition-all"
+                      style={{ width: `${s.question_count_limit > 0 ? (s.question_count / s.question_count_limit) * 100 : 0}%` }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <span
-                  className="badge text-[10.5px]"
-                  style={s.is_active
-                    ? { background: 'rgba(34,197,94,0.1)', color: '#4ade80', border: '1px solid rgba(34,197,94,0.25)' }
-                    : { background: 'rgba(255,255,255,0.04)', color: '#475569', border: '1px solid rgba(255,255,255,0.07)' }
-                  }
-                >
-                  {s.is_active ? 'Active' : 'Inactive'}
-                </span>
-              </div>
-              <div className="flex items-center justify-end gap-1" onClick={e => e.stopPropagation()}>
-                <button onClick={e => handleDelete(s, e)} className="btn-danger py-1 px-2"><Trash2 size={12} /></button>
-                <ChevronRight size={13} className="text-slate-600" />
-              </div>
+                <div>
+                  <StatusBadge status={s.is_active ? 'ACTIVE' : 'EXPIRED'}>
+                    {s.is_active ? 'Active' : 'Inactive'}
+                  </StatusBadge>
+                </div>
+                <div className="flex items-center justify-end gap-1" onClick={e => e.stopPropagation()}>
+                  <button onClick={e => handleDelete(s, e)} className="btn-danger py-1 px-2"><Trash2 size={12} /></button>
+                  <ChevronRight size={13} className="text-gray-300" />
+                </div>
+              </DataRow>
             </motion.div>
           ))}
-        </div>
+        </DataTable>
       )}
     </div>
   );
